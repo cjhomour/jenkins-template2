@@ -9,7 +9,7 @@ metadata:
     alauda.io/description.en: Clone code and builds a docker image
     alauda.io/readme.zh-CN: 克隆代码并构建镜像
     alauda.io/readme.en: Clone code and builds a docker image
-    alauda.io/version: v0.2.4
+    alauda.io/version: v0.2.5
     alauda.io/style.icon: build
   labels:
     category: CICD
@@ -26,6 +26,13 @@ spec:
       tasks:
         - name: Clone
           type: public/clone
+     - name: SyncImage
+      tasks:
+        - name: SyncImage
+          type: public/alaudasyncimage
+          approve:
+            message: "是否要真的同步镜像"
+            timeout: 3600 
     - name: BuildImage
       tasks:
         - name: BuildImage
@@ -33,6 +40,96 @@ spec:
           options:
             timeout: 3600
   arguments:
+    - displayName:
+        zh-CN: "镜像信息"
+        en: "Image Info"
+      items:
+        - name: sourceImage
+          schema:
+            type: alauda.io/imagerepositorymix
+          binding:
+            - SyncImage.args.sourceImage
+          display:
+            type: alauda.io/imagerepositorymix
+            name:
+              zh-CN: "源镜像仓库地址"
+              en: "Address of source image repository"
+            description:
+              zh-CN: "同步镜像时，源镜像若为平台镜像，可直接选择；若为第三方镜像，需手动输入第三方镜像仓库地址，如：index.docker.io/alauda/hello-world"
+              en: "When synchronizing the images, select the source images directly if the images are platform images. If the source images are third party images, you must enter the third party repository address, for example, index.docker.io/alauda/hello-world"
+          required: true
+        - name: "sourceImageTag"
+          schema:
+            type: string
+          binding:
+            - SyncImage.args.sourceImageTag
+          display:
+            type: string
+            name:
+              zh-CN: "源镜像版本TAG1"
+              en: "Source image tag"
+            description:
+              zh-CN: "同步镜像时，源镜像的版本，如：latest"
+              en: "When synchronizing the images, enter the version of the source image, for example, latest."
+          required: true
+          default: latest
+        - name: sourceImageRegistryCredentialsId
+          schema:
+            type: string
+          binding:
+            - SyncImage.args.sourceImageRegistryCredentialsId
+          display:
+            type: alauda.io/jenkinscredentials
+            name:
+              zh-CN: "源镜像凭据SECRET1"
+              en: "Source image registry credentials"
+            description:
+              zh-CN: "若源镜像仓库为有身份验证的第三方仓库，则需要使用凭据。可直接选择凭据，或为其添加新凭据"
+              en: "If the source repository is an authenticated third party repository, you must use credentials. You can directly select an added credential or add new ones."
+          required: false
+        - name: image
+          schema:
+            type: alauda.io/imagerepositorymix
+          binding:
+            - SyncImage.args.image
+          display:
+            type: alauda.io/imagerepositorymix
+            name:
+              zh-CN: "目标镜像仓库地址"
+              en: "Address of target image repository"
+            description:
+              zh-CN: "同步镜像时，目标镜像若为平台镜像，可直接选择；若为第三方镜像，需手动输入第三方镜像仓库地址，如：index.docker.io/alauda/hello-world"
+              en: "When synchronizing the images, select the target images directly if the images are platform images. If the source images are third party images, you must enter the third party repository address, for example, index.docker.io/alauda/hello-world."
+          required: true
+        - name: "imageTag"
+          schema:
+            type: string
+          binding:
+            - SyncImage.args.imageTag
+          display:
+            type: string
+            name:
+              zh-CN: "目标镜像版本TAG2"
+              en: "Target image tag"
+            description:
+              zh-CN: "同步镜像时，源镜像的版本，如：latest"
+              en: "When synchronizing the images, enter the version of the source image, for example, latest. "
+          required: true
+          default: latest
+        - name: imageRegistryCredentialsId
+          schema:
+            type: string
+          binding:
+            - SyncImage.args.imageRegistryCredentialsId
+          display:
+            type: alauda.io/jenkinscredentials
+            name:
+              zh-CN: "目标镜像凭据SECRET2"
+              en: "Target image registry credentials"
+            description:
+              zh-CN: "源镜像仓库为有身份验证的第三方仓库，则需要使用凭据。可直接选择凭据，或为其添加新凭据"
+              en: "If the source repository is an authenticated third party repository, you must use credentials. You can directly select an added credential or add new ones."
+          required: false
     - displayName:
         zh-CN: 配置SonarQube代码扫描
         en: SonarQube Code Scan Configuration
