@@ -9,7 +9,11 @@ metadata:
     alauda.io/description.en: Clone code and builds a docker image
     alauda.io/readme.zh-CN: 克隆代码并构建镜像
     alauda.io/readme.en: Clone code and builds a docker image
-    alauda.io/version: v0.2.5
+    alauda.io/displayName.zh-CN: 同步镜像A
+    alauda.io/displayName.en: Sync Image
+    alauda.io/description.zh-CN: 同步镜像模板。将一个镜像从源仓库同步到目标仓库。若源镜像或目标镜像仓库为私有仓库（内网地址），需确保 Jenkins 服务与其在同一网络环境内，方可使用。
+    alauda.io/description.en: Sync image template. Synchronize a Image tag from the source repository to the target repository. If the source image or target image repository is a private repository (intranet address), ensure that Jenkins services are available in the same network.
+    alauda.io/version: v0.2.7
     alauda.io/style.icon: build
   labels:
     category: CICD
