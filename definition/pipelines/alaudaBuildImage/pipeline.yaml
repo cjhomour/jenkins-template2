@@ -30,7 +30,7 @@ spec:
       tasks:
         - name: Clone
           type: public/clone
-     - name: SyncImage
+    - name: SyncImage
       tasks:
         - name: SyncImage
           type: public/alaudasyncimage
